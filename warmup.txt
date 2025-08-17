@@ -1,0 +1,78 @@
+                                    Warm Up
+1.0.1)
+a) "Hello world" will be printed 16 times.
+b) 15 new processes are created in addition to the original process.
+c) Process Hierarchy
+                (    p0      )
+               /     |    |   \
+              p1     p2   p4  p8
+             / | \   | \   \ 
+            p3 p5 p9 p6 p10 p12
+           / \  \     |
+          p7 p11 p13  p14
+         /
+        p15
+
+
+
+1.0.2)
+a) The value of a will be printed 2 times.
+b) Child Process will print the value of a as 11 whereas Parent Process will print it as 9.
+
+
+
+
+2.0.1)
+a)
+fd1 = 3
+fd2 = 4
+fd3 = 0
+
+b)
+buffer1 = "Hello"
+buffer2 = "World"
+buffer3 = "HelloWorld"
+
+c)
+0 --> file.txt   (fd3, after closing STDIN and opening "file.txt")
+1 --> STDOUT
+2 --> STDERR
+3 --> warmup.txt (fd1, after reading "Hello" and "World")
+4 --> warmup.txt (fd2, after reading "HelloWorld")
+
+
+2.0.2)
+a) The value of fd1 is 3 in both the parent and child processes.
+b) The value of fd2 in the parent process will be 4.
+
+c) 
+Child Process:
+The child process seeks to offset 10 in the file using lseek(fd1, 10, SEEK_SET);.
+The printf in the child process will print: "child: offset 10".
+Parent Process:
+The parent process waits for the child to finish.
+Since the file offset is shared, when the parent process checks the offset with lseek(fd1, 0, SEEK_CUR), it also sees the offset as 10.
+The printf in the parent process will also print: "parent: offset 10".
+
+d)
+Global:
+0 --> STDIN  
+1 --> STDOUT
+2 --> STDERR
+3 --> abc.txt  (Shared by fd1 in both Parent and Child)
+4 --> abc.txt  (fd2 in Parent)
+
+
+Parent:
+0 --> STDIN  
+1 --> STDOUT
+2 --> STDERR
+3 --> abc.txt  (fd1, File Offset=10 Updated by Child)
+4 --> abc.txt  (fd2, File Offset=0)
+
+
+Child:
+0 --> STDIN  
+1 --> STDOUT
+2 --> STDERR
+3 --> abc.txt  (fd1, File Offset=10 Updated by lseek)
